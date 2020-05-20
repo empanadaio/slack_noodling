@@ -1,0 +1,5 @@
+/.nix-hex/
+/.nix-mix/
+/_build/
+/deps/
+/assets/node_modules/

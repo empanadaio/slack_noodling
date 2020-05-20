@@ -1,0 +1,44 @@
+version: '3.4'
+
+x-default_env: &default_env
+  environment:
+    - DATABASE_USERNAME=postgres
+    - DATABASE_HOST=postgres
+    - DATABASE_PORT=5432
+    - MAILER_ADDRESS=mailcatcher
+    - MAILER_PORT=1025
+    - HOME=/tmp
+    - DISPLAY=$DISPLAY
+    - SSH_AUTH_SOCK=/tmp/agent.sock
+
+
+x-default-links: &default_links
+  links:
+    - postgres
+    - mailcatcher
+
+volumes:
+  pgdata:
+
+services:
+  dockerhost:
+    image: qoomon/docker-host
+    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+    #mem_limit: 8M
+    restart: on-failure
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
