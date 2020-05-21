@@ -4,15 +4,28 @@ defmodule SlackNoodlingWeb.MessageController do
   def create(conn, params) do
     IO.inspect(params)
 
-    url = "https://hooks.slack.com/services/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"
-    headers = [
-      {"Content-type", "application/json"}
-    ]
-
-    body = %{text: "I handled a warp command."} |> Jason.encode!()
-    HTTPoison.post(url, body, headers) |> IO.inspect()
+    # send_as_bot("hello i'm a bot")
+    send_as_user(params)
 
     conn
     |> json(%{ok: "bro"})
+  end
+
+  defp send_as_user(%{ "channel_id" => chan, "user_name" => user, "text" => text, "token" => token}) do
+    url = "https://slack.com/api/chat.postMessage"
+
+    auth_token = "xoxb-37173564736-1160830383520-a6G2X3ukwFdA35sKOML5uUp0"
+    headers = [
+      {"Authorization",  "Bearer #{auth_token}"},
+      {"Content-type", "application/json"}
+    ]
+
+    body = %{
+      username: user,
+      channel: chan,
+      text: text,
+      token: token
+    }
+    HTTPoison.post(url, Jason.encode!(body), headers) |> IO.inspect()
   end
 end
