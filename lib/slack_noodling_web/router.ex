@@ -20,9 +20,11 @@ defmodule SlackNoodlingWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SlackNoodlingWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", SlackNoodlingWeb do
+    pipe_through :api
+
+    post "/warp", MessageController, :create
+  end
 
   # Enables LiveDashboard only for development
   #
