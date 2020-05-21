@@ -14,7 +14,7 @@ defmodule SlackNoodlingWeb.MessageController do
   defp send_as_user(%{ "channel_id" => chan, "user_name" => user, "text" => text, "token" => token}) do
     url = "https://slack.com/api/chat.postMessage"
 
-    auth_token = "xoxb-37173564736-1160830383520-a6G2X3ukwFdA35sKOML5uUp0"
+    auth_token = "xoxb-37173564736-1160830383520-HFtaKVrbukgdqv7pXJWfUtsF"
     headers = [
       {"Authorization",  "Bearer #{auth_token}"},
       {"Content-type", "application/json"}
