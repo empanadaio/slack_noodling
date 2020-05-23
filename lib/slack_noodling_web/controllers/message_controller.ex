@@ -11,13 +11,13 @@ defmodule SlackNoodlingWeb.MessageController do
     |> json(%{ok: "bro"})
   end
 
-  defp send_as_user(%{ "channel_id" => chan, "user_name" => user, "text" => text, "token" => token}) do
+  defp send_as_user(%{"channel_id" => chan, "user_name" => user, "text" => text, "token" => token}) do
     url = "https://slack.com/api/chat.postMessage"
 
-    auth_token = "xoxp-37173564736-37174988295-1149854095793-882a78512370e6b121b3c751834124eb"
+    auth_token = System.get_env("SLACK_OAUTH_ACCESS_TOKEN")
 
     headers = [
-      {"Authorization",  "Bearer #{auth_token}"},
+      {"Authorization", "Bearer #{auth_token}"},
       {"Content-type", "application/json"}
     ]
 
@@ -27,6 +27,7 @@ defmodule SlackNoodlingWeb.MessageController do
       text: text,
       token: token
     }
+
     HTTPoison.post(url, Jason.encode!(body), headers) |> IO.inspect()
   end
 end
