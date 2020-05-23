@@ -24,6 +24,7 @@ defmodule SlackNoodlingWeb.Router do
     pipe_through :api
 
     post "/warp", MessageController, :create
+    get "/add_to_slack", MessageController, :add_to_slack
   end
 
   # Enables LiveDashboard only for development
