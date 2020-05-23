@@ -14,7 +14,8 @@ defmodule SlackNoodling.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: SlackNoodling.PubSub},
       # Start the Endpoint (http/https)
-      SlackNoodlingWeb.Endpoint
+      SlackNoodlingWeb.Endpoint,
+      BucketOfAuthTokensLol
       # Start a worker by calling: SlackNoodling.Worker.start_link(arg)
       # {SlackNoodling.Worker, arg}
     ]

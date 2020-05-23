@@ -11,26 +11,18 @@ defmodule SlackNoodlingWeb.MessageController do
     |> json(%{ok: "bro"})
   end
 
-  def add_to_slack(conn, params) do
-    IO.inspect(params, label: "add_to_slack")
+  def add_to_slack(conn, %{"code" => code}) do
+    IO.inspect(code, label: "add_to_slack_callback")
 
-    #  client_id - issued when you created your app (required)
-    #  scope - permissions to request (see below) (required)
-    #  redirect_uri - URL to redirect back to (see below) (optional)
-    #  state - unique string to be passed back upon completion (optional)
-    #  team - Slack team ID of a workspace to attempt to restrict to (optional)
-    client_id = System.get_env("SLACK_OAUTH_CLIENT_ID")
-
-    scope = "chat:write"
-    redirect = "https://warp.gigalixirapp.com/oauth/callback"
-    state = "123state"
+    client_id = System.fetch_env!("SLACK_OAUTH_CLIENT_ID")
+    client_secret = System.fetch_env!("SLACK_OAUTH_CLIENT_SECRET")
 
     url =
-      "https://slack.com/oauth/authorize?client_id=#{client_id}&scope=#{scope}&redirect_uri=#{
-        redirect
-      }&state=#{state}"
+      "https://slack.com/api/oauth.access?client_id#{client_id}&?client_secret=#{client_secret}&code=#{
+        code
+      }"
 
-    HTTPoison.get!(url) |> IO.inspect()
+    HTTPoison.get!(url) |> IO.inspect(label: "auth response")
 
     conn
     |> text("OK?")
