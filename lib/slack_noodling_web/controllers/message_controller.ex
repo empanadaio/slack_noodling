@@ -18,7 +18,7 @@ defmodule SlackNoodlingWeb.MessageController do
     client_secret = System.fetch_env!("SLACK_OAUTH_CLIENT_SECRET")
 
     url =
-      "https://slack.com/api/oauth.access?client_id=#{client_id}&?client_secret=#{client_secret}&code=#{
+      "https://slack.com/api/oauth.access?client_id=#{client_id}&client_secret=#{client_secret}&code=#{
         code
       }"
 
