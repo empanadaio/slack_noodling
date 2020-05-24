@@ -1,4 +1,6 @@
 defmodule BucketOfAuthTokensLol do
+  use Agent
+
   def start_link(_args) do
     Agent.start_link(fn -> [] end, name: __MODULE__)
   end
