@@ -4,6 +4,20 @@ defmodule SlackNoodlingWeb.MessageController do
   def create(conn, params) do
     IO.inspect(params)
 
+    # %{
+    #   "channel_id" => "G0140U94QH0",
+    #   "channel_name" => "privategroup",
+    #   "command" => "/warp",
+    #   "response_url" => "https://hooks.slack.com/commands/T1353GLMN/1140895526165/kMeno7Y17hyXBNjSz9lP8nPA",
+    #   "team_domain" => "bitfield-co",
+    #   "team_id" => "T1353GLMN",
+    #   "text" => "test2",
+    #   "token" => "YPHHk1Ng5ZPBuP3h4mGGfkG3",
+    #   "trigger_id" => "1142483564083.37173564736.17757494c59212b07fbdbb70dc0f86d2",
+    #   "user_id" => "U1354V28P",
+    #   "user_name" => "ben"
+    # }
+
     # send_as_bot("hello i'm a bot")
     send_as_user(params)
 
@@ -22,16 +36,57 @@ defmodule SlackNoodlingWeb.MessageController do
         code
       }"
 
-    HTTPoison.get!(url) |> IO.inspect(label: "auth response")
+    # {
+    # 	"ok": true,
+    # 	"app_id": "A013L7D537Z",
+    # 	"authed_user": {
+    # 		"id": "U1354V28P",
+    # 		"scope": "chat:write",
+    # 		"access_token": "xoxp-37173564736-37174988295-1142112392354-40b2f36160d1d98d0bb595c5b761f7b3",
+    # 		"token_type": "user"
+    # 	},
+    # 	"scope": "commands,incoming-webhook",
+    # 	"token_type": "bot",
+    # 	"access_token": "xoxb-37173564736-1160830383520-qDbefAv4h8NwztioQKAfLJ1e",
+    # 	"bot_user_id": "U014QQEB9FA",
+    # 	"team": {
+    # 		"id": "T1353GLMN",
+    # 		"name": "Bitfield"
+    # 	},
+    # 	"enterprise": null,
+    # 	"incoming_webhook": {
+    # 		"channel": "empanada",
+    # 		"channel_id": "G0140U94QH0",
+    # 		"configuration_url": "https://bitfield-co.slack.com/services/B0146E6441Z",
+    # 		"url": "https://hooks.slack.com/services/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"
+    # 	}
+    # }
+    case(HTTPoison.get!(url) |> IO.inspect(label: "auth response")) do
+      %{status_code: 200, body: body} ->
+        %{"authed_user" => %{"id" => uid, "access_token" => token}} = Jason.decode!(body)
+
+        # remember the token for this user on this app, etc
+        BucketOfAuthTokensLol.store_token(uid, token)
+
+      error ->
+        IO.inspect(error)
+        raise "Fuck'd 'er bud"
+    end
 
     conn
     |> text("OK?")
   end
 
-  defp send_as_user(%{"channel_id" => chan, "user_name" => user, "text" => text, "token" => token}) do
+  defp send_as_user(%{
+         "channel_id" => chan,
+         "user_id" => uid,
+         "user_name" => user,
+         "text" => text,
+         "token" => token
+       }) do
     url = "https://slack.com/api/chat.postMessage"
 
-    auth_token = System.get_env("SLACK_OAUTH_ACCESS_TOKEN")
+    auth_token = BucketOfAuthTokensLol.get_token(uid)
 
     headers = [
       {"Authorization", "Bearer #{auth_token}"},
