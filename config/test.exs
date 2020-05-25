@@ -12,6 +12,16 @@ config :slack_noodling, SlackNoodling.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :slack_noodling, SlackNoodling.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "slack_noodling_test",
+  hostname: "localhost",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10,
+  schema: "eventstore"
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :slack_noodling, SlackNoodlingWeb.Endpoint,
