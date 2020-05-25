@@ -10,6 +10,11 @@ use Mix.Config
 config :slack_noodling,
   ecto_repos: [SlackNoodling.Repo]
 
+config :commanded,
+  event_store_adapter: Commanded.EventStore.Adapters.EventStore
+
+config :slack_noodling, event_stores: [SlackNoodling.EventStore]
+
 # Configures the endpoint
 config :slack_noodling, SlackNoodlingWeb.Endpoint,
   url: [host: "localhost"],
