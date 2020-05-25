@@ -11,6 +11,8 @@ defmodule SlackNoodling.Application do
     ]
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       # Start the Ecto repository
       SlackNoodling.Repo,
@@ -22,9 +24,13 @@ defmodule SlackNoodling.Application do
       {Phoenix.PubSub, name: SlackNoodling.PubSub},
       # Start the Endpoint (http/https)
       SlackNoodlingWeb.Endpoint,
-      BucketOfAuthTokensLol
+      BucketOfAuthTokensLol,
       # Start a worker by calling: SlackNoodling.Worker.start_link(arg)
       # {SlackNoodling.Worker, arg}
+
+      # libcluster
+      {Cluster.Supervisor, [topologies, [name: SlackNoodling.ClusterSupervisor]]},
+
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
