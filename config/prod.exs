@@ -23,8 +23,14 @@ config :slack_noodling, SlackNoodling.Repo,
   url: "${DATABASE_URL}",
   database: "", # Works around a bug in older versions of ecto. Doesn't hurt for other versions.
   ssl: true,
-  pool_size: 2
+  pool_size: 1
 
+config :slack_noodling, SlackNoodling.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  url: "${DATABASE_URL}",
+  pool_size: 1,
+  ssl: true,
+  schema: "eventstore"
 
 
 # Do not print debug messages in production
