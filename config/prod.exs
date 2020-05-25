@@ -32,6 +32,14 @@ config :slack_noodling, SlackNoodling.EventStore,
   ssl: true,
   schema: "eventstore"
 
+config :libcluster,
+  topologies: [
+    k8s_example: [
+      strategy: Cluster.Strategy.Kubernetes,
+      config: [
+        kubernetes_selector: "${LIBCLUSTER_KUBERNETES_SELECTOR}",
+        kubernetes_node_basename: "${LIBCLUSTER_KUBERNETES_NODE_BASENAME}"]]]
+
 
 # Do not print debug messages in production
 config :logger, level: :info

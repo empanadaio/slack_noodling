@@ -50,6 +50,7 @@ defmodule SlackNoodling.MixProject do
       {:distillery, "~> 2.1"},
       {:commanded, "~> 1.1"},
       {:commanded_eventstore_adapter, "~> 1.1"},
+      {:libcluster, "~> 3.2"},
     ]
   end
 
