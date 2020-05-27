@@ -1,4 +1,10 @@
-with (import <nixpkgs> {});
+with (
+  import (builtins.fetchTarball {
+    name = "nixos-20.03-2020-05-27";  # Descriptive name
+    url = https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz;
+    sha256 = "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53";
+  }) {}
+  );
 let
   my-python-packages = python-packages: with python-packages; [
     # other python packages you want
