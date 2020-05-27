@@ -1,5 +1,11 @@
 with (import <nixpkgs> {});
 let
+  my-python-packages = python-packages: with python-packages; [
+    # other python packages you want
+    pip
+    setuptools
+  ];
+  python-with-my-packages = python3.withPackages my-python-packages;
 
   # define packagesto install with special handling for OSX
   basePackages = [
@@ -17,6 +23,7 @@ let
     yarn
     postgresql
     inotify-tools
+    python-with-my-packages
   ];
 
   inputs = if system == "x86_64-darwin" then
@@ -36,6 +43,10 @@ let
   baseHooks = ''
     export PS1='\n\[\033[1;32m\][nix-shell:\w]($(git rev-parse --abbrev-ref HEAD))\$\[\033[0m\] '
 
+    alias pip="PIP_PREFIX='$(pwd)/_build/pip_packages' \pip"
+    export PYTHONPATH="$(pwd)/_build/pip_packages/lib/python3.7/site-packages:$PYTHONPATH"
+    unset SOURCE_DATE_EPOCH
+
     mkdir -p .nix-mix
     mkdir -p .nix-hex
     export MIX_HOME=$PWD/.nix-mix
@@ -43,6 +54,7 @@ let
     export PATH=$MIX_HOME/bin:$PATH
     export PATH=$HEX_HOME/bin:$PATH
     export LANG=en_US.UTF-8
+    export PATH=$PATH:$(pwd)/_build/pip_packages/bin
   '';
 
   hooks = baseHooks + ''
@@ -50,7 +62,7 @@ let
 
 in
   stdenv.mkDerivation {
-    name = "conduit";
+    name = "slack-noodling";
     buildInputs = final;
     shellHook = hooks;
   }

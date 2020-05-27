@@ -10,8 +10,22 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :slack_noodling, SlackNoodlingWeb.Endpoint,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  server: true,
+  load_from_system_env: true, # Needed for Phoenix 1.3. Doesn't hurt for other versions
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  secret_key_base: "${SECRET_KEY_BASE}",
+  version: Mix.Project.config[:version], # To bust cache during hot upgrades
+  url: [host: "${APP_NAME}.gigalixirapp.com", port: 443],
+  http: [port: {:system, "PORT"}] # Needed for Phoenix 1.2 and 1.4. Doesn't hurt for 1.3.
+
+config :slack_noodling, SlackNoodling.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}",
+  database: "", # Works around a bug in older versions of ecto. Doesn't hurt for other versions.
+  ssl: true,
+  pool_size: 2
+
+
 
 # Do not print debug messages in production
 config :logger, level: :info
