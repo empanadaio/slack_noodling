@@ -3,12 +3,8 @@ defmodule SlackNoodling.Application do
   # for more information on OTP Applications
   @moduledoc false
 
-  use Commanded.Application,
-    otp_app: :slack_noodling,
-    event_store: [
-      adapter: Commanded.EventStore.Adapters.EventStore,
-      event_store: SlackNoodling.EventStore
-    ]
+  use Application,
+    otp_app: :slack_noodling
 
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies) || []
@@ -16,8 +12,6 @@ defmodule SlackNoodling.Application do
     children = [
       # Start the Ecto repository
       SlackNoodling.Repo,
-      # Start the EventStore
-      SlackNoodling.EventStore,
       # Start the Telemetry supervisor
       SlackNoodlingWeb.Telemetry,
       # Start the PubSub system

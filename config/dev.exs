@@ -7,7 +7,7 @@ config :slack_noodling, SlackNoodling.Repo,
   database: "slack_noodling_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 1
 
 config :slack_noodling, SlackNoodling.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
@@ -16,7 +16,7 @@ config :slack_noodling, SlackNoodling.EventStore,
   database: "slack_noodling_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10,
+  pool_size: 1,
   schema: "eventstore"
 
 # For development, we disable any cache and enable
