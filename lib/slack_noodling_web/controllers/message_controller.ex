@@ -42,24 +42,18 @@ defmodule SlackNoodlingWeb.MessageController do
     # 	"authed_user": {
     # 		"id": "U1354V28P",
     # 		"scope": "chat:write",
-    # 		"access_token": "xoxp-37173564736-37174988295-1142112392354-40b2f36160d1d98d0bb595c5b761f7b3",
+    # 		"access_token": "xoxp-37173564736-37174988295-1143033407683-3ace622d57c0923341ae3d7263994931",
     # 		"token_type": "user"
     # 	},
-    # 	"scope": "commands,incoming-webhook",
+    # 	"scope": "commands,chat:write.public,chat:write",
     # 	"token_type": "bot",
-    # 	"access_token": "xoxb-37173564736-1160830383520-qDbefAv4h8NwztioQKAfLJ1e",
+    # 	"access_token": "xoxb-37173564736-1160830383520-ILegXonUjIWyCInma2CCroR2",
     # 	"bot_user_id": "U014QQEB9FA",
     # 	"team": {
     # 		"id": "T1353GLMN",
     # 		"name": "Bitfield"
     # 	},
-    # 	"enterprise": null,
-    # 	"incoming_webhook": {
-    # 		"channel": "empanada",
-    # 		"channel_id": "G0140U94QH0",
-    # 		"configuration_url": "https://bitfield-co.slack.com/services/B0146E6441Z",
-    # 		"url": "https://hooks.slack.com/services/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"
-    # 	}
+    # 	"enterprise": null
     # }
     case(HTTPoison.get!(url) |> IO.inspect(label: "auth response")) do
       %{status_code: 200, body: body} ->
