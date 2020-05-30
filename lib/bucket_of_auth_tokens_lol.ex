@@ -13,4 +13,3 @@ defmodule BucketOfAuthTokensLol do
     Agent.get(__MODULE__, fn tokens -> Map.get(tokens, uid) end)
   end
 end
-

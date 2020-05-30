@@ -103,12 +103,12 @@ defmodule SlackNoodlingWeb.MessageController do
     }
 
     case HTTPoison.post(url, Jason.encode!(body), headers) |> IO.inspect() do
-      %{status_code: 200, body: body} ->
+      {:ok, %{status_code: 200, body: body}} ->
         case Jason.decode(body) do
           %{"ok" => true} ->
             :ok
 
-          %{"ok" => false, "error" => "not_authed"} ->
+          {:ok, %{"ok" => false, "error" => "not_authed"}} ->
             {:error, :not_authenticated}
 
             # TODO: figure out the other ways in which this may fail and handle them
