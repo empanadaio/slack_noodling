@@ -1,0 +1,13 @@
+{ pkgs, ... }:
+
+with pkgs; {
+  customPythonPackages = [
+    pythonPackages.pynvim
+  ];
+
+  customPackages = [
+  ];
+
+  customHooks = ''
+  '';
+}
