@@ -17,12 +17,20 @@ defmodule SlackNoodlingWeb.MessageController do
     #   "user_id" => "U1354V28P",
     #   "user_name" => "ben"
     # }
+    case send_as_user(params) do
+      :ok ->
+        conn |> put_status(204) |> text("")
 
-    # send_as_bot("hello i'm a bot")
-    send_as_user(params)
+      {:error, :not_authed} ->
+        conn
+        |> put_status(403)
+        |> text(
+          "You have not authorized use of this app, please enable it here: https://warp.gigalixirapp.com"
+        )
 
-    conn
-    |> json(%{ok: "bro"})
+      {:error, _reason} ->
+        nil
+    end
   end
 
   def add_to_slack(conn, %{"code" => code}) do
@@ -94,6 +102,20 @@ defmodule SlackNoodlingWeb.MessageController do
       token: token
     }
 
-    HTTPoison.post(url, Jason.encode!(body), headers) |> IO.inspect()
+    case HTTPoison.post(url, Jason.encode!(body), headers) |> IO.inspect() do
+      %{status_code: 200, body: body} ->
+        case Jason.decode(body) do
+          %{"ok" => true} ->
+            :ok
+
+          %{"ok" => false, "error" => "not_authed"} ->
+            {:error, :not_authenticated}
+
+            # TODO: figure out the other ways in which this may fail and handle them
+        end
+
+      error ->
+        error
+    end
   end
 end
