@@ -6,12 +6,30 @@ with (
   }) {}
   );
 let
-  my-python-packages = python-packages: with python-packages; [
+  pkgs = import (builtins.fetchTarball {
+    name = "nixos-20.03-2020-05-27";  # Descriptive name
+    url = https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz;
+    sha256 = "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53";
+  }) {};
+
+  localPath = ./. + "/local.nix";
+  local = import localPath { pkgs = pkgs; };
+
+  defaultPythonPackages = [
     # other python packages you want
-    pip
-    setuptools
+    pythonPackages.pip
+    pythonPackages.setuptools
   ];
+
+  finalPythonPackages = if builtins.pathExists localPath then
+            defaultPythonPackages ++ local.customPythonPackages
+           else
+            defaultPythonPackages;
+
+  my-python-packages = python-packages: finalPythonPackages;
+
   python-with-my-packages = python3.withPackages my-python-packages;
+
 
   # define packagesto install with special handling for OSX
   basePackages = [
@@ -37,13 +55,10 @@ let
            else
               basePackages;
 
-
-   localPath = ./. + "/local.nix";
-
    final = if builtins.pathExists localPath then
-            inputs ++ (import localPath)
+            inputs ++ local.customPackages
            else
-             inputs;
+            inputs;
 
   # define shell startup command with special handling for OSX
   baseHooks = ''
@@ -63,8 +78,10 @@ let
     export PATH=$PATH:$(pwd)/_build/pip_packages/bin
   '';
 
-  hooks = baseHooks + ''
-              '';
+  hooks = if builtins.pathExists localPath then
+            baseHooks + local.customHooks
+          else
+            baseHooks;
 
 in
   stdenv.mkDerivation {
