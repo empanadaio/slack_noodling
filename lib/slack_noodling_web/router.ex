@@ -17,6 +17,7 @@ defmodule SlackNoodlingWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/debug", PageController, :debug
     get "/add_to_slack", MessageController, :add_to_slack
   end
 
