@@ -27,6 +27,7 @@ defmodule SlackNoodling.Application do
       SlackNoodlingWeb.Endpoint,
       SlackNoodling.InMemoryTokenStore,
       SlackNoodling.Debug.PubSub,
+      SlackNoodling.Debug.EventClustering,
       # Start a worker by calling: SlackNoodling.Worker.start_link(arg)
       # {SlackNoodling.Worker, arg}
 

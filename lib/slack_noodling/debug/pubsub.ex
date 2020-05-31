@@ -22,7 +22,6 @@ defmodule  SlackNoodling.Debug.PubSub do
 
   @impl true
   def handle_call(:print_msgs, _from, state) do
-    msgs = Process.info(self(), :messages)
     {:reply, state, state}
   end
 
