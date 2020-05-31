@@ -10,6 +10,14 @@ use Mix.Config
 config :slack_noodling,
   ecto_repos: [SlackNoodling.Repo]
 
+config :slack_noodling, SlackNoodling.Application,
+  pubsub: [
+    phoenix_pubsub: [
+      adapter: Phoenix.PubSub.PG2,
+      pool_size: 1
+    ]
+  ]
+
 config :commanded,
   event_store_adapter: Commanded.EventStore.Adapters.EventStore
 

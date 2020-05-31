@@ -8,7 +8,8 @@ defmodule SlackNoodling.Application do
     event_store: [
       adapter: Commanded.EventStore.Adapters.EventStore,
       event_store: SlackNoodling.EventStore
-    ]
+    ],
+    registry: :global
 
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies) || []
