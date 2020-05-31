@@ -36,9 +36,13 @@ defmodule SlackNoodlingWeb.MessageController do
   def create(conn, %{"user_id" => user_id} = params) do
     with {:ok, access_token} <- BucketOfAuthTokensLol.get_token(user_id),
          :ok <- Slack.send_message(access_token, params) do
-      conn |> put_status(204) |> text("")
+      conn
+      |> put_status(204)
+      |> text("")
     else
       {:error, reason} ->
+        IO.inspect(reason, label: "Failed to warp message")
+
         conn
         |> put_status(403)
         |> text(inspect(reason))
