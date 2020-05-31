@@ -26,6 +26,7 @@ defmodule SlackNoodling.Application do
       # Start the Endpoint (http/https)
       SlackNoodlingWeb.Endpoint,
       SlackNoodling.InMemoryTokenStore,
+      SlackNoodling.Debug.PubSub,
       # Start a worker by calling: SlackNoodling.Worker.start_link(arg)
       # {SlackNoodling.Worker, arg}
 
