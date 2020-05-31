@@ -1,10 +1,11 @@
 defmodule SlackNoodling.ReleaseTask do
-   @start_apps [
+  @start_apps [
     :crypto,
     :ssl,
     :postgrex,
     :ecto,
-    :ecto_sql # If using Ecto 3.0 or higher
+    # If using Ecto 3.0 or higher
+    :ecto_sql
   ]
 
   @repos Application.get_env(:slack_noodling, :ecto_repos, [])
