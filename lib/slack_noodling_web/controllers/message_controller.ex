@@ -1,12 +1,12 @@
 defmodule SlackNoodlingWeb.MessageController do
   use SlackNoodlingWeb, :controller
 
-  alias SlackNoodling.Slack
+  alias SlackNoodling.{Slack, InMemoryTokenStore}
 
   def add_to_slack(conn, %{"code" => code}) do
     case Slack.get_access_token(code) do
       {:ok, user_id, access_token} ->
-        BucketOfAuthTokensLol.store_token(user_id, access_token)
+        InMemoryTokenStore.store_token(user_id, access_token)
 
         conn
         |> text("Thank you, you have been authenticated")
@@ -34,7 +34,7 @@ defmodule SlackNoodlingWeb.MessageController do
   #   "user_name" => "ben"
   # }
   def create(conn, %{"user_id" => user_id} = params) do
-    with {:ok, access_token} <- BucketOfAuthTokensLol.get_token(user_id),
+    with {:ok, access_token} <- InMemoryTokenStore.get_token(user_id),
          :ok <- Slack.send_message(access_token, params) do
       conn
       |> put_status(204)
