@@ -1,4 +1,4 @@
 #!/bin/sh
 
-release_ctl eval --mfa "SlackNoodling.ReleaseTasks.migrate/1" --argv -- "$@"
+release_ctl eval --mfa "SlackNoodling.ReleaseTask.migrate/1" --argv -- "$@"
 
