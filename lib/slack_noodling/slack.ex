@@ -37,6 +37,7 @@ defmodule SlackNoodling.Slack do
       {:error, reason} ->
         {:error, reason}
     end
+    |> IO.inspect(label: "get_access_token")
   end
 
   @spec send_message(String.t(), map) :: :ok | api_error
@@ -64,12 +65,16 @@ defmodule SlackNoodling.Slack do
       {:error, reason} ->
         {:error, reason}
     end
+    |> IO.inspect(label: "send_message_return")
   end
 
   @spec post(String.t(), map, list) :: {:ok, map} | api_error
   defp(post(url, body, headers)) do
+    IO.inspect(post: url, headers: headers, body: body)
+
     case HTTPoison.post(url, Jason.encode!(body), headers) do
       {:ok, %{status_code: 200, body: body}} ->
+        IO.inspect(body, label: "response")
         parse_response(body)
 
       {:ok, %{status_code: code, body: error_body}} ->
@@ -84,8 +89,11 @@ defmodule SlackNoodling.Slack do
 
   @spec get(String.t()) :: {:ok, map} | api_error
   defp get(url) do
+    IO.inspect(get: url)
+
     case HTTPoison.get(url) do
       {:ok, %{status_code: 200, body: body}} ->
+        IO.inspect(body, label: "response")
         parse_response(body)
 
       {:error, reason} ->
