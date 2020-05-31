@@ -28,6 +28,17 @@ defmodule SlackNoodling.ReleaseTask do
     stop_services()
   end
 
+  # https://github.com/commanded/eventstore/blob/master/guides/Getting%20Started.md#initialize-a-database-using-an-elixir-release
+  def init_event_store(_argv) do
+    {:ok, _} = Application.ensure_all_started(:postgrex)
+    {:ok, _} = Application.ensure_all_started(:ssl)
+
+    config = SlackNoodling.EventStore.config()
+
+    :ok = EventStore.Tasks.Create.exec(config, [])
+    :ok = EventStore.Tasks.Init.exec(SlackNoodling.EventStore, config, [])
+  end
+
   defp start_services do
     IO.puts("Starting dependencies..")
     # Start apps necessary for executing migrations

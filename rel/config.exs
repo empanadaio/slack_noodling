@@ -56,6 +56,7 @@ release :slack_noodling do
   set commands: [
     migrate: "rel/commands/migrate.sh",
     seed: "rel/commands/seed.sh",
+    init_event_store: "rel/commands/init_event_store.sh",
   ]
 end
 
