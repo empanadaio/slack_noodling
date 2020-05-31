@@ -30,7 +30,8 @@ config :slack_noodling, SlackNoodling.EventStore,
   url: "${DATABASE_URL}",
   pool_size: 1,
   ssl: true,
-  schema: "eventstore"
+  schema: "eventstore",
+  registry: :distributed
 
 config :libcluster,
   topologies: [
