@@ -1,35 +1,34 @@
-with (
-  import (builtins.fetchTarball {
-    name = "nixos-20.03-2020-05-27";  # Descriptive name
-    url = https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz;
-    sha256 = "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53";
-  }) {}
-  );
+with (import (builtins.fetchTarball {
+  name = "nixos-20.03-2020-05-27"; # Descriptive name
+  url =
+    "https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz";
+  sha256 = "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53";
+}) { });
 let
   pkgs = import (builtins.fetchTarball {
-    name = "nixos-20.03-2020-05-27";  # Descriptive name
-    url = https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz;
+    name = "nixos-20.03-2020-05-27"; # Descriptive name
+    url =
+      "https://github.com/nixos/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz";
     sha256 = "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53";
-  }) {};
+  }) { };
 
   localPath = ./. + "/local.nix";
   local = import localPath { pkgs = pkgs; };
 
-  defaultPythonPackages = [
+  defaultPythonPackages = with python37Packages; [
     # other python packages you want
-    pythonPackages.pip
-    pythonPackages.setuptools
+    pip
+    setuptools
   ];
 
   finalPythonPackages = if builtins.pathExists localPath then
-            defaultPythonPackages ++ local.customPythonPackages
-           else
-            defaultPythonPackages;
+    defaultPythonPackages ++ local.customPythonPackages
+  else
+    defaultPythonPackages;
 
   my-python-packages = python-packages: finalPythonPackages;
 
   python-with-my-packages = python3.withPackages my-python-packages;
-
 
   # define packagesto install with special handling for OSX
   basePackages = [
@@ -51,14 +50,14 @@ let
   ];
 
   inputs = if system == "x86_64-darwin" then
-              basePackages ++ [darwin.apple_sdk.frameworks.CoreServices]
-           else
-              basePackages;
+    basePackages ++ [ darwin.apple_sdk.frameworks.CoreServices ]
+  else
+    basePackages;
 
-   final = if builtins.pathExists localPath then
-            inputs ++ local.customPackages
-           else
-            inputs;
+  final = if builtins.pathExists localPath then
+    inputs ++ local.customPackages
+  else
+    inputs;
 
   # define shell startup command with special handling for OSX
   baseHooks = ''
@@ -79,13 +78,12 @@ let
   '';
 
   hooks = if builtins.pathExists localPath then
-            baseHooks + local.customHooks
-          else
-            baseHooks;
+    baseHooks + local.customHooks
+  else
+    baseHooks;
 
-in
-  stdenv.mkDerivation {
-    name = "slack-noodling";
-    buildInputs = final;
-    shellHook = hooks;
-  }
+in stdenv.mkDerivation {
+  name = "slack-noodling";
+  buildInputs = final;
+  shellHook = hooks;
+}

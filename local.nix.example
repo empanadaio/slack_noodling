@@ -2,7 +2,7 @@
 
 with pkgs; {
   customPythonPackages = [
-    pythonPackages.pynvim
+    python37Packages.pynvim
   ];
 
   customPackages = [
