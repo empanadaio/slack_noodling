@@ -3,11 +3,6 @@
 <br>
 <br>
 
-<h1> PubSub Debug </h1>
-<%= inspect pubsub_debug() %>
-<br>
-<br>
-
 <h1> Eventstore Debug </h1>
 <%= inspect events_debug() %>
 
