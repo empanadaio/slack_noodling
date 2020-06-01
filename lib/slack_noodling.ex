@@ -1,9 +1,13 @@
 defmodule SlackNoodling do
-  @moduledoc """
-  SlackNoodling keeps the contexts that define your domain
-  and business logic.
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  alias SlackNoodling.CommandedApp
+  alias SlackNoodling.BsCommand
+
+  def send_bs_command(message) do
+    command = %BsCommand{
+      bs_id: Ecto.UUID.generate,
+      message: message
+    }
+    CommandedApp.dispatch(command)
+  end
 end
