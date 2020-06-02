@@ -17,7 +17,7 @@ defmodule SlackNoodling.Debug.EventClustering do
       %EventData{
         event_type: "Elixir.ExampleEvent",
         data: %ExampleEvent{key: "value"},
-        metadata: %{user: "someuser@example.com"},
+        metadata: %{user: "someuser@example.com"}
       }
     ]
 

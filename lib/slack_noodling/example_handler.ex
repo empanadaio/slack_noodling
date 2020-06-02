@@ -4,7 +4,7 @@ defmodule SlackNoodling.ExampleHandler do
     name: "ExampleHandler"
 
   def handle(%SlackNoodling.BsEvent{} = event, _metadata) do
-    SlackNoodling.TempStateBall.record_event(event, Node.self, self())
+    SlackNoodling.TempStateBall.record_event(event, Node.self(), self())
     :ok
   end
 end

@@ -18,6 +18,10 @@ defmodule SlackNoodlingWeb.Router do
 
     get "/", PageController, :index
     get "/debug", PageController, :debug
+
+    post "/send_to_a", PageController, :send_to_a
+    post "/send_to_b", PageController, :send_to_b
+
     get "/add_to_slack", MessageController, :add_to_slack
   end
 

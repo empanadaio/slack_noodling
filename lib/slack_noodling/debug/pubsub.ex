@@ -1,4 +1,4 @@
-defmodule  SlackNoodling.Debug.PubSub do
+defmodule SlackNoodling.Debug.PubSub do
   use GenServer
   @debug_topic "debug:pubsub"
 

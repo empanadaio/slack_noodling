@@ -8,11 +8,13 @@ defmodule SlackNoodling.BsAggregate do
     %SlackNoodling.BsEvent{
       bs_id: command.bs_id,
       message: command.message,
-      handled_by_node: Node.self,
+      from_node: command.from_node,
+      handled_by_node: Node.self(),
+      handled_by_pid: :erlang.pid_to_list(self())
     }
   end
 
   def apply(%Bullshit{} = state, %SlackNoodling.BsEvent{} = event) do
-    %{ state | messages: state.messages ++ [event.message]}
+    %{state | messages: state.messages ++ [event.message]}
   end
 end

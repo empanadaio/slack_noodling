@@ -22,7 +22,7 @@ defmodule SlackNoodling.TempStateBall do
   end
 
   def handle_call({:store, event, node, pid}, _from, state) do
-    new_state = state ++ [{event, node, pid}]
+    new_state = [{event, node, pid} | state]
     {:reply, :ok, new_state}
   end
 end

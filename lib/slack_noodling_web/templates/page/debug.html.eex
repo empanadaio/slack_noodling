@@ -3,6 +3,22 @@
 <br>
 <br>
 
+<%= form_for @conn, Routes.page_path(@conn, :send_to_a), fn f -> %>
+  <%= submit "Send to A" %>
+<% end %>
+
+<%= form_for @conn, Routes.page_path(@conn, :send_to_b), fn f -> %>
+  <%= submit "Send to B" %>
+<% end %>
+
 <h1> Eventstore Debug </h1>
-<%= inspect events_debug() %>
+<table>
+  <%= for {event, node, pid} <- events_debug() do %>
+    <tr>
+      <td><%= node %></td>
+      <td><%= :erlang.pid_to_list(pid) %></td>
+      <td><%= inspect(event) %></td>
+    </tr>
+  <% end %>
+</table>
 
