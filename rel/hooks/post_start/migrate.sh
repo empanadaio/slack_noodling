@@ -15,5 +15,5 @@ done
 set -e
 
 echo "Running migrations"
-bin/slack_noodling rpc SlackNoodling.ReleaseTask migrate
+bin/slack_noodling rpc "SlackNoodling.ReleaseTask.migrate"
 echo "Migrations run successfully"

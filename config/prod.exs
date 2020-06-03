@@ -23,7 +23,8 @@ config :slack_noodling, SlackNoodling.Repo,
   url: "${DATABASE_URL}",
   database: "", # Works around a bug in older versions of ecto. Doesn't hurt for other versions.
   ssl: true,
-  pool_size: 1
+  # We need at least 2 for running migrations
+  pool_size: 2
 
 config :slack_noodling, SlackNoodling.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,

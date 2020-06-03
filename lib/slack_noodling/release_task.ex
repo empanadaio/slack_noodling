@@ -10,7 +10,7 @@ defmodule SlackNoodling.ReleaseTask do
 
   @repos Application.get_env(:slack_noodling, :ecto_repos, [])
 
-  def migrate(_argv) do
+  def migrate(_argv \\ nil) do
     start_services()
 
     run_migrations()
