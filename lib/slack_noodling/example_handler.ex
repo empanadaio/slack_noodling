@@ -3,8 +3,16 @@ defmodule SlackNoodling.ExampleHandler do
     application: SlackNoodling.CommandedApp,
     name: "ExampleHandler"
 
+  alias SlackNoodling.Repo
+  alias SlackNoodling.Projections.Temp
+
   def handle(%SlackNoodling.BsEvent{} = event, _metadata) do
-    SlackNoodling.TempStateBall.record_event(event, Node.self(), self())
+    Repo.insert!(%Temp{
+      node: Node.self() |> to_string(),
+      pid: self() |> :erlang.pid_to_list() |> to_string(),
+      event: Map.from_struct(event)
+    })
+
     :ok
   end
 end

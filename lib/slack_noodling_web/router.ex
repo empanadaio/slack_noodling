@@ -19,8 +19,7 @@ defmodule SlackNoodlingWeb.Router do
     get "/", PageController, :index
     get "/debug", PageController, :debug
 
-    post "/send_to_a", PageController, :send_to_a
-    post "/send_to_b", PageController, :send_to_b
+    post "/messages", PageController, :create_message
 
     get "/add_to_slack", MessageController, :add_to_slack
   end
@@ -29,6 +28,7 @@ defmodule SlackNoodlingWeb.Router do
   scope "/api", SlackNoodlingWeb do
     pipe_through :api
 
+    post "/messages", PageController, :create_message_from_api
     post "/warp", MessageController, :create
   end
 

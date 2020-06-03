@@ -13,7 +13,6 @@ defmodule SlackNoodling.Application do
       # Start the EventStore
       # SlackNoodling.EventStore,
       # Start the Telemetry supervisor
-      SlackNoodling.TempStateBall,
       SlackNoodling.ExampleHandler,
       SlackNoodlingWeb.Telemetry,
       # Start the PubSub system
@@ -27,8 +26,7 @@ defmodule SlackNoodling.Application do
       # {SlackNoodling.Worker, arg}
 
       # libcluster
-      {Cluster.Supervisor, [topologies, [name: SlackNoodling.ClusterSupervisor]]},
-
+      {Cluster.Supervisor, [topologies, [name: SlackNoodling.ClusterSupervisor]]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

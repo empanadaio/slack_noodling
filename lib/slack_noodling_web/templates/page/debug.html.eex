@@ -3,21 +3,22 @@
 <br>
 <br>
 
-<%= form_for @conn, Routes.page_path(@conn, :send_to_a), fn f -> %>
-  <%= submit "Send to A" %>
-<% end %>
+<%= form_for @conn, Routes.page_path(@conn, :create_message), fn f -> %>
+  <label for="message_to">Aggregate ID:</label>
+  <input type="text" id="message_to" name="message[to]" value="<%= UUID.uuid4() %>" />
 
-<%= form_for @conn, Routes.page_path(@conn, :send_to_b), fn f -> %>
-  <%= submit "Send to B" %>
+  <label for="message_body">Message</label>
+  <textarea id="message_body" name="message[body]">Test message</textarea>
+  <%= submit "Send" %>
 <% end %>
 
 <h1> Eventstore Debug </h1>
 <table>
-  <%= for {event, node, pid} <- events_debug() do %>
+  <%= for e <- @events do %>
     <tr>
-      <td><%= node %></td>
-      <td><%= :erlang.pid_to_list(pid) %></td>
-      <td><%= inspect(event) %></td>
+      <td><%= e.node %></td>
+      <td><%= e.pid %></td>
+      <td><%= inspect(e.event) %></td>
     </tr>
   <% end %>
 </table>
