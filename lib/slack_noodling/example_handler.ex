@@ -6,6 +6,12 @@ defmodule SlackNoodling.ExampleHandler do
   alias SlackNoodling.Repo
   alias SlackNoodling.Projections.Temp
 
+  @impl true
+  def init() do
+    IO.inspect({Node.self(), self()}, label: "HANDLER UP")
+  end
+
+  @impl true
   def handle(%SlackNoodling.BsEvent{} = event, _metadata) do
     Repo.insert!(%Temp{
       node: Node.self() |> to_string(),
