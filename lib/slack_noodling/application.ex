@@ -13,7 +13,7 @@ defmodule SlackNoodling.Application do
       # Start the EventStore
       # SlackNoodling.EventStore,
       # Start the Telemetry supervisor
-      SlackNoodling.ExampleHandler,
+      SlackNoodling.NoodleSupervisor,
       SlackNoodlingWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: SlackNoodling.PubSub},

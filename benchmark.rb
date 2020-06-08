@@ -21,15 +21,18 @@ def send_message(aggregate_id)
 
   uri = URI(url)
 
+  startime = Time.now
   res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: url.start_with?("https")) do |http|
     req = Net::HTTP::Post.new(uri)
     req.set_form_data(body)
     http.request(req)
   end
 
+  endtime = Time.now
+
   case res
   when Net::HTTPSuccess, Net::HTTPRedirection
-    print '.'
+    puts endtime - startime
   else
     pp res.value
   end
