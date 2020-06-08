@@ -2,7 +2,7 @@ defmodule SlackNoodling.InMemoryTokenStore do
   use Agent
 
   def start_link(_args) do
-    Agent.start_link(fn -> %{} end, name: {:global, __MODULE__})
+    Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
   @spec store_token(String.t(), String.t()) :: :ok
