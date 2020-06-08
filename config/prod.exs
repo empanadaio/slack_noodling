@@ -11,20 +11,24 @@ use Mix.Config
 # before starting your production server.
 config :slack_noodling, SlackNoodlingWeb.Endpoint,
   server: true,
-  load_from_system_env: true, # Needed for Phoenix 1.3. Doesn't hurt for other versions
+  # Needed for Phoenix 1.3. Doesn't hurt for other versions
+  load_from_system_env: true,
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: "${SECRET_KEY_BASE}",
-  version: Mix.Project.config[:version], # To bust cache during hot upgrades
+  # To bust cache during hot upgrades
+  version: Mix.Project.config()[:version],
   url: [host: "${APP_NAME}.gigalixirapp.com", port: 443],
-  http: [port: {:system, "PORT"}] # Needed for Phoenix 1.2 and 1.4. Doesn't hurt for 1.3.
+  # Needed for Phoenix 1.2 and 1.4. Doesn't hurt for 1.3.
+  http: [port: {:system, "PORT"}]
 
 config :slack_noodling, SlackNoodling.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: "${DATABASE_URL}",
-  database: "", # Works around a bug in older versions of ecto. Doesn't hurt for other versions.
+  # Works around a bug in older versions of ecto. Doesn't hurt for other versions.
+  database: "",
   ssl: true,
   # We need at least 2 for running migrations
-  pool_size: 2
+  pool_size: 1
 
 config :slack_noodling, SlackNoodling.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
@@ -40,8 +44,10 @@ config :libcluster,
       strategy: Cluster.Strategy.Kubernetes,
       config: [
         kubernetes_selector: "${LIBCLUSTER_KUBERNETES_SELECTOR}",
-        kubernetes_node_basename: "${LIBCLUSTER_KUBERNETES_NODE_BASENAME}"]]]
-
+        kubernetes_node_basename: "${LIBCLUSTER_KUBERNETES_NODE_BASENAME}"
+      ]
+    ]
+  ]
 
 # Do not print debug messages in production
 config :logger, level: :info
