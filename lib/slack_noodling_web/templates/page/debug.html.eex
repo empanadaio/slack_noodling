@@ -18,7 +18,10 @@
     <tr>
       <td><%= e.node %></td>
       <td><%= e.pid %></td>
-      <td><%= inspect(e.event) %></td>
+      <td><%= String.split(e.event["bs_id"], "-") |> List.first() %></td>
+      <td><%= e.event["from_node"] %></td>
+      <td><%= e.event["handled_by_node"] %></td>
+      <td><%= e.event["handled_by_pid"] %></td>
     </tr>
   <% end %>
 </table>
