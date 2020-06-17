@@ -34,6 +34,7 @@ defmodule SlackNoodlingWeb.MessageController do
   #   "user_name" => "ben"
   # }
   def create(conn, %{"user_id" => user_id} = params) do
+    IO.inspect(params, label: "Create message")
     with {:ok, access_token} <- InMemoryTokenStore.get_token(user_id),
          :ok <- Slack.send_message(access_token, params) do
       conn
