@@ -44,9 +44,43 @@ defmodule SlackNoodlingWeb.MessageController do
       {:error, reason} ->
         IO.inspect(reason, label: "Failed to warp message")
 
-        conn
-        |> put_status(403)
-        |> text(inspect(reason))
+        if :no_saved_token == reason do
+          conn
+          |> json(please_auth)
+        else
+          conn
+          |> put_status(403)
+          |> text(inspect(reason))
+        end
     end
+  end
+
+  defp please_auth do
+    %{
+      "blocks" => [
+        %{
+          "type" => "section",
+          "text" => %{
+            "type" => "mrkdwn",
+            "text" => "Hey, it looks like you haven't yet given Warp to send delayed messages on your behalf."
+          }
+        },
+        %{
+          "type" =>  "actions",
+          "block_id" => "actionblock789",
+          "elements" => [
+            %{
+              "type" => "button",
+              "text" => %{
+                "type" => "plain_text",
+                "text" => "Authorize"
+              },
+              "style" => "primary",
+              "url" => "https://slack.com/oauth/v2/authorize?client_id=37173564736.1122251173271&scope=commands,chat:write.public,chat:write&user_scope=chat:write"
+            }
+          ]
+        }
+      ]
+    }
   end
 end
